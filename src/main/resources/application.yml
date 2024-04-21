@@ -1,1 +1,18 @@
-spring.application.name=product-catalog
+spring:
+  application:
+    name: product-catalog
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties.hibernate.format_sql: true
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss

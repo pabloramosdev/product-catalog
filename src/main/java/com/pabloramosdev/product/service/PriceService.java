@@ -1,8 +1,8 @@
 package com.pabloramosdev.product.service;
 
+import com.pabloramosdev.product.mapper.PriceMapper;
 import com.pabloramosdev.product.model.PriceDto;
-import com.pabloramosdev.product.persistence.entity.Price;
-import com.pabloramosdev.product.persistence.repository.PriceRepository;
+import com.pabloramosdev.product.repository.PriceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +13,11 @@ import java.time.LocalDateTime;
 public class PriceService {
 
     private final PriceRepository priceRepository;
+    private final PriceMapper priceMapper;
 
     public PriceDto productPriceWithHighestPriority(LocalDateTime fareDate, Integer productId, Integer brandId) {
-        Price price = priceRepository.findProductPriceByBrandAndDateRange(fareDate, productId, brandId)
-                .orElseGet(Price::new);
-        return PriceDto.builder()
-                .brandId(price.getBrandId())
-                .productId(price.getProductId())
-                .fare(price.getPriceList())
-                .startDate(price.getStartDate())
-                .endDate(price.getEndDate())
-                .price(price.getPrice())
-                .build();
+        return priceRepository.findProductPriceByBrandAndDateRange(fareDate, productId, brandId)
+                .map(priceMapper::entityToDto)
+                .orElseGet(() -> PriceDto.builder().build());
     }
 }

@@ -1,8 +1,7 @@
 package com.pabloramosdev.product.controller;
 
 import com.pabloramosdev.product.model.PriceDto;
-import com.pabloramosdev.product.persistence.entity.Price;
-import com.pabloramosdev.product.persistence.repository.PriceRepository;
+import com.pabloramosdev.product.service.PriceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +17,13 @@ import java.time.LocalDateTime;
 @RequestMapping(path = "/prices")
 public class PriceController {
 
-    private final PriceRepository priceRepository;
+    private final PriceService priceService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PriceDto> getPrices(@RequestParam("fare_date") LocalDateTime fareDate,
                                               @RequestParam("product_id") Integer productId,
                                               @RequestParam("brand_id") Integer brandId) {
-        Price price = priceRepository.findProductPriceByBrandAndDateRange(fareDate, productId, brandId);
-        return ResponseEntity.ok().body(PriceDto.builder()
-                        .brandId(price.getBrandId())
-                        .productId(price.getProductId())
-                        .fare(price.getPriceList())
-                        .startDate(price.getStartDate())
-                        .endDate(price.getEndDate())
-                        .price(price.getPrice())
-                .build());
+        return ResponseEntity.ok(priceService.productPriceWithHighestPriority(fareDate, productId, brandId));
     }
 
 }

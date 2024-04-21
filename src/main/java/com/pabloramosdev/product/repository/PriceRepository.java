@@ -1,6 +1,6 @@
-package com.pabloramosdev.product.persistence.repository;
+package com.pabloramosdev.product.repository;
 
-import com.pabloramosdev.product.persistence.entity.Price;
+import com.pabloramosdev.product.entity.Price;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

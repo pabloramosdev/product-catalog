@@ -95,4 +95,13 @@ class PriceControllerIT {
                 .andExpect(jsonPath("$.price").value(38.95));
     }
 
+    @Test
+    @DisplayName("Get Price for ZARA product 40000 at 2020-06-16 21:00:00")
+    void getPrices6() throws Exception {
+        mvc.perform(get("/prices?fare_date=2020-06-16 21:00:00&product_id=40000&brand_id=1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.pabloramosdev.product.service;
 
 import com.pabloramosdev.product.entity.Price;
+import com.pabloramosdev.product.exception.PriceNotFoundException;
 import com.pabloramosdev.product.mapper.PriceMapper;
 import com.pabloramosdev.product.model.PriceDto;
 import com.pabloramosdev.product.repository.PriceRepository;
@@ -41,15 +42,10 @@ class PriceServiceTest {
     @Test
     void productPriceWithHighestPriorityWhenLookForAnNonExistingPriceThenReturnEmptyPrice() {
         when(priceRepository.findProductPriceByBrandAndDateRange(any(), anyInt(), anyInt())).thenReturn(Optional.empty());
-        PriceDto priceDto = priceService.productPriceWithHighestPriority(LocalDateTime.now(), 1, 1);
+        PriceNotFoundException exception = assertThrows(PriceNotFoundException.class,
+                () -> priceService.productPriceWithHighestPriority(LocalDateTime.of(2021,6,16,21,0,0), 1, 1));
         verify(priceRepository).findProductPriceByBrandAndDateRange(any(), anyInt(), anyInt());
-        assertNotNull(priceDto);
-        assertNull(priceDto.getProductId());
-        assertNull(priceDto.getBrandId());
-        assertNull(priceDto.getPrice());
-        assertNull(priceDto.getStartDate());
-        assertNull(priceDto.getEndDate());
-        assertNull(priceDto.getFare());
+        assertEquals("Price not found for input conditions: fare_date = 2021-06-16T21:00, product_id = 1, brand_id = 1", exception.getMessage());
     }
 
 }

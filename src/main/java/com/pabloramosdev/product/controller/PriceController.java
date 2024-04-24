@@ -30,6 +30,8 @@ public class PriceController {
             @ApiResponse(responseCode = "200", description = "The best Price",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = PriceDto.class)) }),
+            @ApiResponse(responseCode = "204", description = "There is not price for provided parameters",
+                    content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad parameters supplied",
                     content = @Content)})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
